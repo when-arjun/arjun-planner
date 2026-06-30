@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Arjun Pro Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-white antialiased overflow-x-hidden selection:bg-red-500/30">
+
+    <!-- Header: Dynamic Streak Engine -->
+    <header class="pt-12 px-6 pb-4">
+        <h1 class="text-2xl font-black tracking-tight" id="greeting">Hi Arjun,</h1>
+        <div class="flex items-center gap-2 mt-1">
+            <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+            <p class="text-gray-400 text-sm font-medium" id="streak-display">Calculating streak...</p>
+        </div>
+    </header>
+
+    <!-- Calendar: Productivity Heatmap -->
+    <section class="px-4 mb-8">
+        <div class="bg-[#111111] rounded-[32px] p-5 border border-white/5 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="navMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 active:scale-90 transition">❮</button>
+                <h2 id="month-label" class="text-red-400 font-black uppercase tracking-[0.2em] text-[10px]"></h2>
+                <button onclick="navMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 active:scale-90 transition">❯</button>
+            </div>
+            <div class="grid grid-cols-7 gap-1 text-[9px] text-gray-600 text-center mb-3 font-black tracking-widest">
+                <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+            </div>
+            <div id="calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
+        </div>
+    </section>
+
+    <!-- Timeline: The Infinite Week Canvas -->
+    <section class="px-4 mb-32">
+        <div class="flex justify-between items-end mb-4 px-2">
+            <h3 class="text-xl font-bold tracking-tight" id="timeline-title">Your Plan</h3>
+            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Swipe to Explore</span>
+        </div>
+        
+        <div class="overflow-x-auto no-scrollbar snap-x snap-mandatory">
+            <div id="timeline-canvas" class="flex gap-0 min-h-[700px] bg-[#080808] rounded-[40px] border border-white/5 relative">
+                <!-- Columns injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- The Command Center (Footer) -->
+    <div class="fixed bottom-8 left-4 right-4 max-w-md mx-auto z-50">
+        <div class="bg-[#1c1c1e]/80 backdrop-blur-3xl border border-white/10 rounded-[32px] p-4 flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+            <div class="flex items-center gap-4">
+                <div id="footer-emoji-wrapper" class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-3xl transition-all duration-500">😴</div>
+                <div>
+                    <p id="footer-status" class="text-[10px] text-blue-400 font-black uppercase tracking-widest">Idle</p>
+                    <p id="footer-task-name" class="text-base font-bold text-white/90">Nothing planned</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleActiveTask()" class="w-8 h-8 rounded-xl border-2 border-blue-500/50 flex items-center justify-center group active:scale-90 transition">
+                    <i data-lucide="check" id="footer-check" class="text-blue-500 scale-0 transition-transform"></i>
+                </button>
+                <button onclick="openModal()" class="bg-red-400 text-black w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-red-400/20 active:scale-90 transition">
+                    <i data-lucide="plus" stroke-width="3"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Task Modal -->
+    <div id="task-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="absolute bottom-0 left-0 right-0 bg-[#1c1c1e] rounded-t-[50px] p-10 border-t border-white/10 translate-y-full transition-transform duration-500 ease-out" id="modal-content">
+            <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8"></div>
+            
+            <div class="flex items-center gap-6 mb-10">
+                <input type="text" id="in-emoji" placeholder="🎯" class="w-24 h-24 bg-white/5 text-5xl text-center rounded-[32px] border-none focus:ring-2 focus:ring-red-400/50 transition-all outline-none">
+                <input type="text" id="in-title" placeholder="Activity Title" class="flex-1 bg-transparent text-3xl font-black text-white placeholder:text-gray-700 border-none outline-none">
+            </div>
+
+            <div class="space-y-6">
+                <!-- Advanced Sync Slider Logic -->
+                <div class="bg-white/5 rounded-[32px] p-6">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Start Time</label>
+                            <input type="time" id="in-start" class="bg-transparent text-red-400 text-2xl font-black border-none outline-none">
+                        </div>
+                        <div class="h-10 w-[1px] bg-white/10"></div>
+                        <div class="flex flex-col gap-1 items-end">
+                            <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest">End Time</label>
+                            <input type="time" id="in-end" class="bg-transparent text-white text-2xl font-black border-none outline-none text-right">
+                        </div>
+                    </div>
+                    
+                    <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-4">Duration Preset</label>
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar" id="duration-presets">
+                        <!-- JS generated buttons -->
+                    </div>
+                </div>
+
+                <button onclick="saveTask()" class="w-full py-5 bg-blue-500 text-white rounded-[24px] font-black text-lg shadow-xl shadow-blue-500/20 active:scale-[0.98] transition">Create Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

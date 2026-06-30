@@ -1,0 +1,58 @@
+/* Core Overrides */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
+
+/* Calendar Productivity Logic */
+.cal-day {
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    color: #444;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.prod-high { background: #4ade80 !important; color: #000 !important; transform: scale(1.05); box-shadow: 0 0 15px rgba(74, 222, 128, 0.3); }
+.prod-low { background: #f87171 !important; color: #fff !important; }
+.is-today { border: 2px solid #fff; color: #fff; }
+
+/* Timeline Architecture */
+.tm-col {
+    min-width: 80px;
+    position: relative;
+    border-right: 1px solid rgba(255,255,255,0.03);
+    padding-top: 60px;
+}
+.tm-line {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    bottom: 40px;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+}
+.task-bubble {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    background: #1a1a1e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+}
+.task-bubble:active { transform: translateX(-50%) scale(1.2); }
+
+/* Animation Classes */
+.modal-open #modal-content { transform: translateY(0); }
+.dur-pill { padding: 10px 20px; background: rgba(255,255,255,0.05); border-radius: 14px; font-size: 12px; font-weight: 800; color: #777; transition: 0.2s; }
+.dur-pill.active { background: #f87171; color: #000; }
