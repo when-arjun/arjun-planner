@@ -1,86 +1,43 @@
+/* Core Styling */
 body { -webkit-tap-highlight-color: transparent; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Calendar Heatmap */
-.cal-day { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; font-weight: 900; color: #222; }
+/* Calendar Productivity Heatmap */
+.cal-day { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; font-weight: 900; color: #333; }
 .prod-high { background: #4ade80 !important; color: #000 !important; }
 .prod-low { background: #f87171 !important; color: #fff !important; }
-.is-today { border: 2px solid #fff; color: #fff; }
+.is-today { border: 2px solid white; color: white; }
 
-/* Timeline Core */
-.tm-col {
-    flex: 1;
-    position: relative;
-    height: 100%;
-}
+/* Week Selector Strip */
+.week-day { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; border-radius: 20px; transition: 0.3s; }
+.week-day.active { background: #f87171; color: black; }
+.week-day span:first-child { font-size: 8px; font-weight: 900; opacity: 0.6; }
+.week-day span:last-child { font-size: 14px; font-weight: 900; }
 
-/* Hourly Lines */
-.hour-line {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: rgba(255,255,255,0.05);
-}
-
-/* The Central Vertical Lines */
-.tm-col::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255,255,255,0.1);
-    transform: translateX(-50%);
-}
-
-.icon-wrap {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    z-index: 50;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-.rise-btn { top: 10px; background: #f87171; }
-.sleep-btn { bottom: 10px; background: #3b82f6; }
-
-.day-name {
-    position: absolute;
-    top: -25px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 9px;
-    font-weight: 900;
-    color: #444;
-}
-
-/* The Precise Task Pill */
+/* The Structured "Task Pill" */
 .task-pill {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 42px;
-    background: #1a1a1e;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 25px;
+    width: 220px; /* Wide pill like Structured */
+    border-radius: 28px;
+    background: #1c1c1e;
+    border: 1px solid rgba(255,255,255,0.05);
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    z-index: 20;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    transition: transform 0.2s;
+    padding: 0 15px;
+    gap: 15px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.task-pill:active { scale: 1.05; }
+.task-pill.done { opacity: 0.4; filter: grayscale(1); }
+.pill-emoji { font-size: 20px; }
+.pill-title { font-weight: 800; font-size: 14px; flex: 1; }
+.pill-time { font-size: 9px; font-weight: 900; opacity: 0.5; text-transform: uppercase; }
 
-.dur-pill.active { background: #f87171 !important; color: black !important; }
-#tick-btn.done { background: #4ade80; border-color: #4ade80; }
-#tick-btn.done i { opacity: 1; }
+/* Modal Elements */
+.color-dot.active { border-color: white; }
+#tick-btn.active { background: #4ade80; border-color: #4ade80; }
+#tick-btn.active i { opacity: 1; }
